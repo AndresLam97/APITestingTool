@@ -20,6 +20,7 @@ class GUI():
         self.collectionFileTextField = tkinter.Entry(self.tk,state="disabled")
         self.environmentFileTextField = tkinter.Text(self.tk,state="normal")
         self.iterationRunTextField = tkinter.Entry()
+        self.iterationRunTextField.insert(0,"1")
 
     def components_line_up(self):
         # Window config
