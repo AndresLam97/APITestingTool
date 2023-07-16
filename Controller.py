@@ -16,27 +16,23 @@ class Controller():
             self.verify_collection_file()
             self.verify_environment_file()
             self.verify_iteration_run_time()
-            dialogType = "Info"
-            title = "Confirm before start process"
-            message = "The environment file that will be run on process:\n"
-            for environment in self.useableEnvironmentFile:
-                message = message + environment + "\n"
-            if len(self.notUsableEnvironmentFile) > 0:
-                message = message + "\nThe environment file that will not be run on process:\n"
+            if len(self.environmentFiles) == 1:
+                self.start()
+            else:
+                dialogType = "Info"
+                title = "Confirm before start process"
+                message = "The environment file that will be run on process:\n"
+                for environment in self.useableEnvironmentFile:
+                    message = message + environment + "\n"
+                if len(self.notUsableEnvironmentFile) > 0:
+                    message = message + "\nThe environment file that will not be run on process:\n"
                 for environment in self.notUsableEnvironmentFile:
                     message = message + environment + "\n"
-            result = self.display_information_dialog(dialogType,title,message)
-            if result == True:
-                processFile = os.getcwd() + "\\Process.js"
-                environmentFileList = ",".join(self.useableEnvironmentFile)
-                process = subprocess.Popen(["node", processFile, self.collectionFileName, environmentFileList, str(self.iterationTime)])
-                process.wait()
-                dialogType = "Success"
-                title = "Process run result"
-                message = "The process was run successfully and the run report saved into the report folder, please check the folder to get the run report !!!"
-                self.display_information_dialog(dialogType,title,message)
-            else:
-                pass
+                result = self.display_information_dialog(dialogType,title,message)
+                if result == True:
+                    self.start()
+                else:
+                    pass
             
         except Exception as ex:
             dialogType, title, message = ex.args
@@ -61,10 +57,8 @@ class Controller():
             if(environmentFile != "\n"):
                 trimmedEnvironmentFile = environmentFile.strip()
                 if(os.path.isfile(trimmedEnvironmentFile)):
-                    print(trimmedEnvironmentFile)
                     self.useableEnvironmentFile.append(trimmedEnvironmentFile)
                 else:
-                    print(trimmedEnvironmentFile)
                     self.notUsableEnvironmentFile.append(trimmedEnvironmentFile)
             else:
                 pass
@@ -85,3 +79,17 @@ class Controller():
             return tkinter.messagebox.askokcancel(title=title,message=message)
         else:
             pass
+
+    def start(self):
+        processFile = os.getcwd() + "\\Process.js"
+        dialogType = "Success"
+        title = "Process run result"
+        message = "The process was run successfully and the run report saved into the report folder, please check the folder to get the run report !!!"
+        if(len(self.environmentFiles) == 1):
+            process = subprocess.Popen(["node", processFile, self.collectionFileName, str(self.iterationTime)])
+        else:
+            environmentFileList = ",".join(self.useableEnvironmentFile)
+            process = subprocess.Popen(["node", processFile, self.collectionFileName, environmentFileList, str(self.iterationTime)])
+        
+        process.wait()
+        self.display_information_dialog(dialogType,title,message)

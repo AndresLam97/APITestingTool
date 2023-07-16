@@ -1,24 +1,30 @@
 const newman = require('newman')
 
-const environmentFiles = process.argv[3].split(",")
+const totalArguments = process.argv.length;
+var collectionFileName;
+var environmentFiles;
+var iterationRun;
 
-for(let index = 0; index < process.argv[4];index++)
+
+if (totalArguments === 4)
 {
-    for(let environmentFileIndex = 0 ; environmentFileIndex < environmentFiles.length; environmentFileIndex++)
-    {
-        date = new Date(Date.now())
-        currentDateTime = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate() + "-" + date.getHours() + "-" + date.getMinutes() + "-" + date.getSeconds()
-        exportFileName = "./report/" + environmentFiles[environmentFileIndex] + " " + currentDateTime + "-run time " + environmentFileIndex + ".html"
-        console.log(exportFileName)
-        newman.run(
-            {
-                collection: require(process.argv[2]),
-                environment: require(environmentFiles[index]),
-                reporters: 'htmlextra',
-                reporter: {
-                    htmlextra: { export: exportFileName}
-                }
-            }
-        )
-    }
+    collectionFileName = process.argv[2]
+    iterationRun = process.argv[3]
+}
+else if (totalArguments === 5)
+{
+    collectionFileName = process.argv[2]
+    environmentFiles = process.argv[3].split(",")
+    iterationRun = process.argv[4]
+}
+else
+    throw new Error("There are not enought arguments, please retry !!!")
+
+try
+{
+
+}
+catch
+{
+
 }
