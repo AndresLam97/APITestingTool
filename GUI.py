@@ -67,7 +67,6 @@ class GUI():
         self.collectionFileTextField.insert(tkinter.INSERT,fileName)
         self.collectionFileTextField.configure(state="disabled")
 
-
     def select_environment_file(self):
         postmanEnvironmentPattern = r"*.postman_environment.json"
         fileNames = tkinter.filedialog.askopenfilenames(title = "Select Environment File"
