@@ -1,11 +1,13 @@
 import GUI
 import tkinter,tkinter.ttk
 import random
+import time
 
 class ProgressBar():
     def __init__(self,mainFrame):
-        self.mainFrame = mainFrame
-        self.subFrame = tkinter.Toplevel(master=mainFrame)
+        self.gui = mainFrame
+        self.mainFrame = mainFrame.get_main_frame()
+        self.subFrame = tkinter.Toplevel(master=mainFrame.get_main_frame())
         self.progress = tkinter.ttk.Progressbar(self.subFrame, orient='horizontal', mode='determinate')
         self.progressLabel = tkinter.ttk.Label(self.subFrame,text="Progress: 0%",anchor="center")
 
@@ -31,18 +33,21 @@ class ProgressBar():
             self.progress['maximum'] = 100
             stopPoint = random.randint(50,90)
             index = 0
-            while stopPoint < 101:
-
-
-                index = index + 1
-                
-
-            for i in range(101):
-                self.progress['value'] = i
-                self.progressLabel['text'] = "Progress: " + str(i) + "%"
-                self.progress.update()
-                self.subFrame.after(100)  # 100 milliseconds
+            while index < 101:
+                if self.gui.get_progress_check_variable() == False and index < stopPoint:
+                    self.progress['value'] = index
+                    self.progressLabel['text'] = "Progress: " + str(index) + "%"
+                    self.progress.update()
+                    self.subFrame.after(100)
+                    index = index + 1
+                elif self.gui.get_progress_check_variable() == True:
+                    self.progress['value'] = index
+                    self.progressLabel['text'] = "Progress: " + str(index) + "%"
+                    self.progress.update()
+                    self.subFrame.after(50)
+                    index = index + 1
+                else:
+                    time.sleep(0.2)
             self.subFrame.grab_release()
-            self.subFrame.destroy()
         except Exception as ex:
-            print("error")
+            print(str(ex))

@@ -1,4 +1,4 @@
-import tkinter, tkinter.filedialog
+import tkinter, tkinter.filedialog, tkinter.ttk
 import Controller
 
 class GUI():
@@ -67,6 +67,7 @@ class GUI():
         self.collectionFileTextField.insert(tkinter.INSERT,fileName)
         self.collectionFileTextField.configure(state="disabled")
 
+
     def select_environment_file(self):
         postmanEnvironmentPattern = r"*.postman_environment.json"
         fileNames = tkinter.filedialog.askopenfilenames(title = "Select Environment File"
@@ -75,14 +76,24 @@ class GUI():
             self.environmentFileTextField.insert(tkinter.INSERT,file + "\n")
 
     def run_process(self):
-        self.controller = Controller.Controller(self.collectionFileTextField.get(), self.environmentFileTextField.get(1.0,tkinter.END),self.iterationRunTextField.get());
-        self.controller.run_process();
+        self.progressCheckVar = False
+        self.controller = Controller.Controller(self)
+        self.controller.run_process()
 
     def get_collection_file(self):
         return self.collectionFileTextField.get()
     
-    def get_environment_file(self):
+    def get_environment_files(self):
         return self.environmentFileTextField.get(1.0,tkinter.END)
     
     def get_iteration_run(self):
         return self.iterationRunTextField.get()
+    
+    def get_progress_check_variable(self):
+        return self.progressCheckVar
+    
+    def set_progress_check_variable(self,value):
+        self.progressCheckVar = value
+        
+    def get_main_frame(self):
+        return self.tk

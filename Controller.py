@@ -2,12 +2,14 @@ import GUI
 import tkinter.messagebox
 import os
 import subprocess
+import ProgressBar
 
 class Controller():
-    def __init__(self,collectionFileName,environmentFiles,iterationTime):
-        self.collectionFileName = collectionFileName
-        self.environmentFiles = environmentFiles
-        self.iterationTime = iterationTime
+    def __init__(self,gui):
+        self.gui = gui
+        self.collectionFileName = gui.get_collection_file()
+        self.environmentFiles = gui.get_environment_files()
+        self.iterationTime = gui.get_iteration_run()
         self.useableEnvironmentFile = []
         self.notUsableEnvironmentFile = []
     
@@ -81,6 +83,7 @@ class Controller():
             pass
 
     def start(self):
+        progressBar = ProgressBar.ProgressBar(self.gui)
         processFile = os.getcwd() + "\\Process.js"
         dialogType = "Success"
         title = "Process run result"
@@ -91,5 +94,10 @@ class Controller():
             environmentFileList = ",".join(self.useableEnvironmentFile)
             process = subprocess.Popen(["node", processFile, self.collectionFileName, environmentFileList, str(self.iterationTime)])
         
-        process.wait()
+        progressBar.animated_run()
+        while process.poll() == None:
+            self.gui.set_progress_check_variable(False)
+        self.gui.set_progress_check_variable(True)
+        
+
         self.display_information_dialog(dialogType,title,message)
