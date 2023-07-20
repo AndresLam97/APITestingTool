@@ -1,6 +1,5 @@
 import GUI
 import tkinter,tkinter.ttk
-import random
 import time
 
 class ProgressBar():
@@ -26,28 +25,21 @@ class ProgressBar():
         self.progressLabel.pack()
         self.subFrame.geometry(f"{subFrame_width}x{subFrame_height}+{subFrame_x_position}+{subFrame_y_position}")
         
-    def animated_run(self):
-        self.line_up_components()
+    
+
+    def animated_run(self,stopPoint,runspeed):
         try:
             self.subFrame.grab_set()
             self.progress['maximum'] = 100
-            stopPoint = random.randint(50,90)
-            index = 0
-            while index < 101:
-                if self.gui.get_progress_check_variable() == False and index < stopPoint:
-                    self.progress['value'] = index
-                    self.progressLabel['text'] = "Progress: " + str(index) + "%"
-                    self.progress.update()
-                    self.subFrame.after(100)
-                    index = index + 1
-                elif self.gui.get_progress_check_variable() == True:
-                    self.progress['value'] = index
-                    self.progressLabel['text'] = "Progress: " + str(index) + "%"
-                    self.progress.update()
-                    self.subFrame.after(50)
-                    index = index + 1
-                else:
-                    time.sleep(0.2)
-            self.subFrame.grab_release()
+            index = self.progress['value']
+            while index <= stopPoint:
+                self.progress['value'] = index
+                self.progressLabel['text'] = "Progress: " + str(index) + "%"
+                self.progress.update()
+                self.subFrame.after(runspeed)
+                index = index + 1
+            if self.progress['value'] == 100:
+                self.subFrame.grab_release()
+                self.subFrame.destroy()
         except Exception as ex:
             print(str(ex))

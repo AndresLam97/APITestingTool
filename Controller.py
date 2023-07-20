@@ -1,8 +1,8 @@
-import GUI
 import tkinter.messagebox
 import os
 import subprocess
 import ProgressBar
+import random
 
 class Controller():
     def __init__(self,gui):
@@ -84,20 +84,19 @@ class Controller():
 
     def start(self):
         progressBar = ProgressBar.ProgressBar(self.gui)
+        progressBar.line_up_components()
         processFile = os.getcwd() + "\\Process.js"
         dialogType = "Success"
         title = "Process run result"
         message = "The process was run successfully and the run report saved into the report folder, please check the folder to get the run report !!!"
         if(len(self.environmentFiles) == 1):
             process = subprocess.Popen(["node", processFile, self.collectionFileName, str(self.iterationTime)])
+            progressBar.animated_run(random.randint(50,90),100)
+            process.wait()
         else:
             environmentFileList = ",".join(self.useableEnvironmentFile)
             process = subprocess.Popen(["node", processFile, self.collectionFileName, environmentFileList, str(self.iterationTime)])
-        
-        progressBar.animated_run()
-        while process.poll() == None:
-            self.gui.set_progress_check_variable(False)
-        self.gui.set_progress_check_variable(True)
-        
-
+            progressBar.animated_run(random.randint(50,90),100)
+            process.wait()
+        progressBar.animated_run(100,50)
         self.display_information_dialog(dialogType,title,message)
