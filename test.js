@@ -56,8 +56,6 @@ function convertResponseBody(responseStream)
 
 async function main() {
   const collectionPaths = [
-    'C:/Users/Andres/Desktop/Code/NodeJs/My Collection.postman_collection.json',
-    'C:/Users/Andres/Desktop/Code/NodeJs/My Collection 1.postman_collection.json',
     'C:/Users/Andres/Desktop/Code/NodeJs/My Collection 2.postman_collection.json',
   ];
 
@@ -95,7 +93,9 @@ async function main() {
           statusCode: execution.response.code,
           responseTime: execution.response.responseTime,
           responseBody: convertResponseBody(execution.response.stream)
-        });
+        })
+        console.log(execution.assertions)
+        ;
     });
 
       const excelFilePath = `C:/Users/Andres/Desktop/Code/NodeJs/output_collection_${i + 1}.xlsx`;
