@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import tkinter, tkinter.filedialog, tkinter.ttk
 import Controller
 import ProgressBar
@@ -94,3 +95,9 @@ class GUI():
     
     def get_main_frame(self):
         return self.tk
+=======
+import GUI
+
+gui = GUI.GUI()
+gui.start_up()
+>>>>>>> 627cc5faf15e5847b18463722c6f453dde57f037

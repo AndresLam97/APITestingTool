@@ -24,12 +24,10 @@ class ProgressBar():
         self.progress.pack(pady=5)
         self.progressLabel.pack()
         self.subFrame.geometry(f"{subFrame_width}x{subFrame_height}+{subFrame_x_position}+{subFrame_y_position}")
-        
-    
+        self.subFrame.grab_set()
 
     def animated_run(self,stopPoint,runspeed):
         try:
-            self.subFrame.grab_set()
             self.progress['maximum'] = 100
             index = self.progress['value']
             while index <= stopPoint:

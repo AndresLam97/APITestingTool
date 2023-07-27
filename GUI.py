@@ -22,6 +22,10 @@ class GUI():
         self.iterationRunTextField = tkinter.Entry()
         self.iterationRunTextField.insert(0,"1")
 
+        # Check box components
+        self.runRequestParallelVariable = tkinter.IntVar()
+        self.runRequestParallelCheckButton = tkinter.Checkbutton(self.tk,text= "Run request parallel",variable=self.runRequestParallelVariable)
+
     def components_line_up(self):
         # Window config
         self.tk.title("Api Test Tool")
@@ -53,6 +57,9 @@ class GUI():
         self.collectionFileButton.grid(row = 0, column = 6,pady=5,sticky='nsew', padx = 5)
         self.environmentFileButton.grid(row = 1, column = 6,pady=5,sticky='ew', padx = 5)
         self.runButton.grid(row = 3, column=6,sticky='nsew',pady = 5, padx = 5)
+
+        # Check button components line up
+        self.runRequestParallelCheckButton.grid(row=3, column = 3, sticky='nsew')
 
     def start_up(self):
         self.init_components()
@@ -97,3 +104,4 @@ class GUI():
         
     def get_main_frame(self):
         return self.tk
+    
