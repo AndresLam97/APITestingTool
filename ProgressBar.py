@@ -6,7 +6,7 @@ class ProgressBar():
     def __init__(self,mainFrame):
         self.gui = mainFrame
         self.mainFrame = mainFrame.get_main_frame()
-        self.subFrame = tkinter.Toplevel(master=mainFrame.get_main_frame())
+        self.subFrame = tkinter.Toplevel(master=self.mainFrame)
         self.progress = tkinter.ttk.Progressbar(self.subFrame, orient='horizontal', mode='determinate')
         self.progressLabel = tkinter.ttk.Label(self.subFrame,text="Progress: 0%",anchor="center")
 
