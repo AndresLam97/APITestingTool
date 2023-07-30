@@ -1,0 +1,42 @@
+Kết quả chạy collection 1: New Collection
+[
+  {
+    assertion: 'test something',
+    skipped: false,
+    error: {
+      name: 'TypeError',
+      index: 0,
+      test: 'test something',
+      message: "Cannot read properties of undefined (reading 'code')",
+      stack: "TypeError: Cannot read properties of undefined (reading 'code')\n" +
+        '   at Object.eval sandbox-script.js:1:1)'
+  }
+]
+Đã ghi kết quả của collection 1 vào file Excel: C:/Users/Andres/Desktop/Code/NodeJs/output_collection_1.xlsx
+PS C:\Users\Andres\Desktop\Code\NodeJs\APITestingTool> node test.js
+Kết quả chạy collection 1: New Collection
+[ { assertion: 'test something', skipped: false, error: undefined } ]
+Đã ghi kết quả của collection 1 vào file Excel: C:/Users/Andres/Desktop/Code/NodeJs/output_collection_1.xlsx
+PS C:\Users\Andres\Desktop\Code\NodeJs\APITestingTool> node test.js
+Kết quả chạy collection 1: New Collection
+[
+  {
+    assertion: 'test something',
+    skipped: false,
+    error: {
+      name: 'AssertionError',
+      index: 0,
+      test: 'test something',
+      message: 'expected 200 to equal 400',
+      stack: 'AssertionError: expected 200 to equal 400\n' +
+        '   at Object.eval sandbox-script.js:1:1)'
+    }
+  }
+]
+
+
+
+Nếu không có lỗi gì, execution.assertion trả về list các assert trong request với tag error = undefined
+Nếu assert lỗi, execution.assertion trả về list các assert trong request với tag error chứa các thông tin lỗi, lấy name + ":" + message
+Nếu assertion đó được skip, tag skipped = true
+Nếu không có assert, execution.assertion trả về undefined

@@ -1,6 +1,6 @@
-import Test
+import NewGUI
 
-GUI = Test.GUI()
+GUI = NewGUI.GUI()
 GUI.start_up()
 
 

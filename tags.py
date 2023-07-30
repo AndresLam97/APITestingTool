@@ -1,7 +1,6 @@
 import tkinter as tk
 import tkinter.font as tkFont
 import tkinter.filedialog as tkDialog
-import Controller
 
 class App:
     def __init__(self):
@@ -97,3 +96,7 @@ class App:
         
     def get_main_frame(self):
         return self.tk
+
+if __name__ == "__main__":
+    app = App()
+    app.start_up()
