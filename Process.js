@@ -1,9 +1,17 @@
 const newman = require('newman')
 
+
+
+
+
+
 const totalArguments = process.argv.length;
 var collectionFileName;
 var environmentFiles;
 var iterationRun;
+
+
+
 
 
 if (totalArguments === 4)

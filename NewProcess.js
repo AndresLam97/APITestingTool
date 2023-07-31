@@ -2,7 +2,9 @@ const fs = require('fs');
 const newman = require('newman');
 const { exit } = require('process');
 const prompt = require('prompt-sync')();
+const ex = require('exceljs');
 
+const columnNames = ["Collecton Name","Request Name", "Method", "Url", "Status","Code","Response Time","Reponse Size","Executed", "Failed","Skippped","Total Assertions","Executed Count","Failed Count","Skipped Count","Response Body"];
 const argumentList = ["-c","--collectionFile","-e","--environmentFile","-n","--numberOfRun","-p","--parallel"];
 const totalArgumentsInputted = process.argv.slice(2);
 let runParallel = false;
@@ -199,7 +201,6 @@ function export_file_name_generate(collectionFile,runTime,environmentFile)
 {
     var collectionNameList = collectionFile.split("/");
     var collectionName = collectionNameList[collectionNameList.length - 1].split(".")[0];
-    console.log(collectionNameList)
     const date = new Date(Date.now());
     var currentDateTime = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate() + "-" + date.getHours() + "-" + date.getMinutes() + "-" + date.getSeconds();
     if(environmentFile !== undefined)
@@ -213,6 +214,27 @@ function export_file_name_generate(collectionFile,runTime,environmentFile)
         var exportFileName = "./report/" + collectionName + "-" + currentDateTime + "- run time " + (runTime + 1) + ".csv";
     }
     return exportFileName;
+}
+
+function beautify_column_header(fileName)
+{
+    var wb = new ex.Workbook();
+    wb.csv.readFile(fileName).then(() => {
+        const ws = wb.getWorksheet();
+
+        // Remove the first column
+        ws.spliceColumns(1,1);
+        
+        // Rename all the headers
+        let firstRow = ws.getRow(1);
+        for(let index = 1; index <= firstRow.cellCount; index++)
+        {
+            firstRow.getCell(index).value = columnNames[index - 1];
+        }
+        wb.csv.writeFile(fileName);
+    }).catch(err => {
+            console.log(err.message);
+    });
 }
 
 function run_request_parallel_process()
@@ -233,21 +255,19 @@ function run_request_concurrent_process()
             {
                 for(const environmentPath of usableEnvironment)
                 {
-                    console.log(collectionPath)
-                    console.log(environmentPath)
-                    console.log("=============================================")
                     var exportFileName = export_file_name_generate(collectionPath,index,environmentPath);
                     newman.run(
                         {
-                            collection: require(collectionPath),
-                            environment: require(environmentPath),
+                            collection: collectionPath,
+                            environment: environmentPath,
                             reporters: 'csv',
                             reporter: {
                                 csv: { 
                                     includeBody: true,
                                     export: exportFileName}
                             }
-                        }
+                        },
+                        (error,result) => {beautify_column_header(exportFileName);}
                         )
                 }
             }
@@ -259,18 +279,18 @@ function run_request_concurrent_process()
         {
             for(const collectionPath of usableCollection)
             {
-                    var exportFileName = export_file_name_generate(collectionPath,index);
-                    newman.run(
-                        {
-                            collection: require(collectionPath),
-                            reporters: 'csv',
-                            reporter: {
-                                csv: { 
-                                    includeBody: true,
-                                    export: exportFileName}
-                            }
-                        }
-                        )
+                var exportFileName = export_file_name_generate(collectionPath,index);
+                newman.run(
+                    {
+                        collection: collectionPath,
+                        reporters: 'csv',
+                        reporter: {
+                            csv: { 
+                                includeBody: true,
+                                export: exportFileName}
+                                    }
+                    },(error,result) => {beautify_column_header(exportFileName);}
+                        );
             }
         }
     }

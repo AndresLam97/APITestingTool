@@ -1,0 +1,204 @@
+{
+	"info": {
+		"_postman_id": "6c57ed2f-b5bc-4eca-b225-b386c480b6b8",
+		"name": "My Collection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "16979268",
+		"_collection_link": "https://andres200197team.postman.co/workspace/Team-Workspace~c9ee1962-3318-4168-8d24-3f111f46b8d7/collection/16979268-6c57ed2f-b5bc-4eca-b225-b386c480b6b8?action=share&creator=16979268&source=collection_link"
+	},
+	"item": [
+		{
+			"name": "First request",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							"var options = {\r",
+							"  'method': 'GET',\r",
+							"  'url': 'https://api.instantwebtools.net/v1/airlines/1',\r",
+							"  'headers': {\r",
+							"  }\r",
+							"};\r",
+							"\r",
+							"pm.sendRequest.skip(options,function(error,response){\r",
+							"    if (response.code === 200)\r",
+							"    {\r",
+							"        console.log(\"Hello\")\r",
+							"        postman.setNextRequest(\"Fourth request\");\r",
+							"    }\r",
+							"\r",
+							"})\r",
+							"\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('First request',function(){\r",
+							"    pm.expect(pm.response.code).to.be.equal(200);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.instantwebtools.net/v1/airlines/1",
+					"protocol": "https",
+					"host": [
+						"api",
+						"instantwebtools",
+						"net"
+					],
+					"path": [
+						"v1",
+						"airlines",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Second request",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('Second request',function(){\r",
+							"    pm.expect(pm.response.code).to.be.equal(200);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.instantwebtools.net/v1/airlines/2",
+					"protocol": "https",
+					"host": [
+						"api",
+						"instantwebtools",
+						"net"
+					],
+					"path": [
+						"v1",
+						"airlines",
+						"2"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Third request",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('First request',function(){\r",
+							"    pm.expect(pm.response.code).to.be.equal(200);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.instantwebtools.net/v1/airlines/3",
+					"protocol": "https",
+					"host": [
+						"api",
+						"instantwebtools",
+						"net"
+					],
+					"path": [
+						"v1",
+						"airlines",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Fourth request",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test('First request',function(){\r",
+							"    pm.expect(pm.response.code).to.be.equal(200);\r",
+							"})"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://api.instantwebtools.net/v1/airlines/4",
+					"protocol": "https",
+					"host": [
+						"api",
+						"instantwebtools",
+						"net"
+					],
+					"path": [
+						"v1",
+						"airlines",
+						"4"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

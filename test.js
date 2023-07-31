@@ -17,6 +17,7 @@ function runCollection(collectionPath) {
 
 function getRequestBody(fullRequestBody)
 {
+    console.log(fullRequestBody)
     var fullRequestBodyString = JSON.stringify(fullRequestBody)
     const fullRequestBodyJson = JSON.parse(fullRequestBodyString)
     if(fullRequestBodyJson['mode'] === 'raw')
@@ -56,11 +57,13 @@ function convertResponseBody(responseStream)
 
 async function main() {
   const collectionPaths = [
-    'C:/Users/Andres/Desktop/Code/NodeJs/My Collection 2.postman_collection.json',
+    './My Collection.postman_collection.json',
   ];
 
   const promises = collectionPaths.map(runCollection);
 
+
+  
   try {
     const summaries = await Promise.all(promises);
 
@@ -94,11 +97,11 @@ async function main() {
           responseTime: execution.response.responseTime,
           responseBody: convertResponseBody(execution.response.stream)
         })
-        console.log(execution.assertions)
+        
         ;
     });
 
-      const excelFilePath = `C:/Users/Andres/Desktop/Code/NodeJs/output_collection_${i + 1}.xlsx`;
+      const excelFilePath = `./output_collection_${i + 1}.xlsx`;
       await workbook.xlsx.writeFile(excelFilePath);
       console.log(`Đã ghi kết quả của collection ${i + 1} vào file Excel: ${excelFilePath}`);
     }
