@@ -1,37 +1,62 @@
-const fs = require('fs');
-const ex = require('exceljs');
+const newman = require('newman');
 
-const file ='test.csv';
-const columnNames = ["Collecton Name","Request Name", "Method", "Url", "Status","Code","Response Time","Reponse Size","Executed", "Failed","Skippped","Total Assertions","Executed Count","Failed Count","Skipped Count","Response Body"]
-wb = new ex.Workbook();
+// Mảng chứa đường dẫn tới các file collection
+const collectionPaths = [
+  'path/to/collection1.json',
+  'path/to/collection2.json',
+  'path/to/collection3.json',
+  // Thêm các đường dẫn đến các collection khác nếu cần
+];
 
-// done for removing iteration row
-// wb.csv.readFile(file).then(() => {
-//   const ws = wb.getWorksheet();
-//   ws.spliceColumns(1,1);
-//   wb.csv.writeFile(file);
+// Mảng chứa đường dẫn tới các file environment
+const environmentPaths = [
+  'path/to/environment1.json',
+  'path/to/environment2.json',
+  'path/to/environment3.json',
+  // Thêm các đường dẫn đến các environment khác nếu cần
+];
 
-// }).catch(err => {
-//   console.log(err.message);
-// });
+// Hàm giả lập việc chạy Newman bằng Promise
+function runNewmanWithPromise(collectionPath, environmentPath) {
+  return new Promise((resolve, reject) => {
+    const options = {
+      collection: require(collectionPath),
+      environment: require(environmentPath),
+    };
 
-// // done for changing header name
-// wb.csv.readFile(file).then(() => {
-//   const ws = wb.getWorksheet();
+    newman.run(options, function (err, summary) {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(summary);
+      }
+    });
+  });
+}
 
-//   // Remove the first column
-//   ws.spliceColumns(1,1);
+// Hàm chạy song song các request trong từng cặp collection và environment
+async function runCollectionsWithEnvironments() {
+  const promises = [];
 
-//   // Rename all the headers
-//   let firstRow = ws.getRow(1);
-//   for(let index = 1; index <= firstRow.cellCount; index++)
-//   {
-//     firstRow.getCell(index).value = columnNames[index - 1];
-//   }
-//   wb.csv.writeFile(file);
-// }).catch(err => {
-//   console.log(err.message);
-// });
+  for (let i = 0; i < collectionPaths.length; i++) {
+    for (let j = 0; j < environmentPaths.length; j++) {
+      const collectionPath = collectionPaths[i];
+      const environmentPath = environmentPaths[j];
 
+      const promise = runNewmanWithPromise(collectionPath, environmentPath);
+      promises.push(promise);
+    }
+  }
 
-console.log(fs.existsSync("./report/My Collection-2023-6-31-13-26-3- run time 1.csv"));
+  try {
+    const results = await Promise.all(promises);
+    console.log('Kết quả chạy các cặp collection và environment:', results);
+    // Xử lý kết quả ở đây (nếu cần)
+  } catch (error) {
+    console.error('Có lỗi xảy ra:', error);
+    // Xử lý lỗi ở đây (nếu cần)
+  }
+}
+
+// Chạy song song các request trong từng cặp collection và environment
+runCollectionsWithEnvironments();
