@@ -1,37 +1,14 @@
-const fs = require('fs');
-const ex = require('exceljs');
+const { exec } = require('child_process');
 
-const file ='test.csv';
-const columnNames = ["Collecton Name","Request Name", "Method", "Url", "Status","Code","Response Time","Reponse Size","Executed", "Failed","Skippped","Total Assertions","Executed Count","Failed Count","Skipped Count","Response Body"]
-wb = new ex.Workbook();
+collectionPath = '"My Collection.postman_collection.json"'
+environmentPath = '"SIT Environment.postman_environment.json"'
+const command = "newman run " + collectionPath + " -e " + environmentPath;
 
-// done for removing iteration row
-// wb.csv.readFile(file).then(() => {
-//   const ws = wb.getWorksheet();
-//   ws.spliceColumns(1,1);
-//   wb.csv.writeFile(file);
-
-// }).catch(err => {
-//   console.log(err.message);
-// });
-
-// // done for changing header name
-// wb.csv.readFile(file).then(() => {
-//   const ws = wb.getWorksheet();
-
-//   // Remove the first column
-//   ws.spliceColumns(1,1);
-
-//   // Rename all the headers
-//   let firstRow = ws.getRow(1);
-//   for(let index = 1; index <= firstRow.cellCount; index++)
-//   {
-//     firstRow.getCell(index).value = columnNames[index - 1];
+exec(command, (err, stdout, stderr) => {
+//   if (err) {
+//     console.error(`exec error: ${err}`);
+//     return;
 //   }
-//   wb.csv.writeFile(file);
-// }).catch(err => {
-//   console.log(err.message);
-// });
 
-
-console.log(fs.existsSync("./report/My Collection-2023-6-31-13-26-3- run time 1.csv"));
+  console.log(stdout);
+});

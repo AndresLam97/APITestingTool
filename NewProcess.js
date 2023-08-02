@@ -3,6 +3,7 @@ const newman = require('newman');
 const { exit } = require('process');
 const prompt = require('prompt-sync')();
 const ex = require('exceljs');
+const child_process = require('child_process');
 
 const columnNames = ["Collecton Name","Request Name", "Method", "Url", "Status","Code","Response Time","Reponse Size","Executed", "Failed","Skippped","Total Assertions","Executed Count","Failed Count","Skipped Count","Response Body"];
 const argumentList = ["-c","--collectionFile","-e","--environmentFile","-n","--numberOfRun","-p","--parallel"];
@@ -237,6 +238,7 @@ function beautify_column_header(fileName)
     });
 }
 
+
 function run_request_parallel_process()
 {
     for(let index = 0; index < numberOfRun; index++)
@@ -256,19 +258,27 @@ function run_request_concurrent_process()
                 for(const environmentPath of usableEnvironment)
                 {
                     var exportFileName = export_file_name_generate(collectionPath,index,environmentPath);
-                    newman.run(
-                        {
-                            collection: collectionPath,
-                            environment: environmentPath,
-                            reporters: 'csv',
-                            reporter: {
-                                csv: { 
-                                    includeBody: true,
-                                    export: exportFileName}
-                            }
-                        },
-                        (error,result) => {beautify_column_header(exportFileName);}
-                        )
+                    const command = "newman run " + '"' + collectionPath + '"' + " -e " + '"' + environmentPath + '"'+ " -r csv" + " --reporter-csv-export "+ '"' + exportFileName + '"';
+                    console.log(command)
+                    console.log(exportFileName)
+                    child_process.exec(command,(error,stdout,stderr)=>{
+                        console.log(stderr)
+                        console.log(stdout);
+
+                    }); 
+                    // newman.run(
+                    //     {
+                    //         collection: collectionPath,
+                    //         environment: environmentPath,
+                    //         reporters: 'csv',
+                    //         reporter: {
+                    //             csv: { 
+                    //                 includeBody: true,
+                    //                 export: exportFileName}
+                    //         }
+                    //     },
+                    //     (error,result) => {beautify_column_header(exportFileName);}
+                    //     )
                 }
             }
         }
@@ -310,6 +320,7 @@ try
     else
     {
         run_request_concurrent_process();
+
     }
 }catch(error)
 {
