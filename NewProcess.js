@@ -241,9 +241,30 @@ function beautify_column_header(fileName)
 
 function run_request_parallel_process()
 {
-    for(let index = 0; index < numberOfRun; index++)
+    if (usableEnvironment.length > 0)
     {
-            console.log(index)
+        for(let index = 0; index < numberOfRun; index++)
+        {
+            for(const collectionPath of usableCollection)
+            {
+                for(const environmentPath of usableEnvironment)
+                {
+                    var exportFileName = export_file_name_generate(collectionPath,index,environmentPath);
+                    
+                }
+            }
+        }
+    }
+    else
+    {
+        for(let index = 0; index < numberOfRun;index++)
+        {
+            for(const collectionPath of usableCollection)
+            {
+                var exportFileName = export_file_name_generate(collectionPath,index);
+                
+            }
+        }
     }
 }
 
