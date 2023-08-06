@@ -1,5 +1,0 @@
-iteration,collectionName,requestName,method,url,status,code,responseTime,responseSize,executed,failed,skipped,totalAssertions,executedCount,failedCount,skippedCount
-"1","My Collection","First request","GET","https://api.instantwebtools.net/v1/airlines/1","OK","200","946","279","First request",,,"1","1","0","0"
-"1","My Collection","Second request","GET","https://api.instantwebtools.net/v1/airlines/2","OK","200","291","296","Second request",,,"1","1","0","0"
-"1","My Collection","Third request","GET","https://api.instantwebtools.net/v1/airlines/3","OK","200","290","280","First request",,,"1","1","0","0"
-"1","My Collection","Fourth request","GET","https://api.instantwebtools.net/v1/airlines/4","OK","200","355","226","First request",,,"1","1","0","0"

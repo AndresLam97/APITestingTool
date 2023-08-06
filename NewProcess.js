@@ -5,7 +5,8 @@ const prompt = require('prompt-sync')();
 const ex = require('exceljs');
 const child_process = require('child_process');
 
-const columnNames = ["Collecton Name","Request Name", "Method", "Url", "Status","Code","Response Time","Reponse Size","Executed", "Failed","Skippped","Total Assertions","Executed Count","Failed Count","Skipped Count","Response Body"];
+const columnNames = ["Collecton Name","Request Name", "Method", "Url", "Status","Code","Response Time","Response Size","Executed", "Failed","Skippped","Full Name","Request Body","Response Body"];
+const notUsableColumns = ['iteration','fullName','statusCode']
 const argumentList = ["-c","--collectionFile","-e","--environmentFile","-n","--numberOfRun","-p","--parallel"];
 const totalArgumentsInputted = process.argv.slice(2);
 let runParallel = false;
@@ -159,7 +160,7 @@ function check_valid_of_collection_and_environment()
     {
         throw new Error("Must be at least one collection is usable, please recheck !!!");
     }
-    if(notUsableCollection.length > 0 || notUsableEnvironment > 0)
+    if(notUsableCollection.length > 0 || notUsableEnvironment.length > 0)
     {
         console.log("These following file(s) will not be run in the process:");
         if(notUsableCollection.length > 0)
@@ -224,15 +225,21 @@ function beautify_column_header(fileName)
         const ws = wb.getWorksheet();
 
         // Remove the first column
-        ws.spliceColumns(1,1);
+        let firstRowBeforeRemoveColumns = ws.getRow(1);
+        for(let index = 1; index <= firstRowBeforeRemoveColumns.cellCount;index++)
+        {
+            if(notUsableColumns.includes(firstRowBeforeRemoveColumns.getCell(index).value))
+            {
+                ws.spliceColumns(index,1);
+            }
+        }
         
         // Rename all the headers
-        let firstRow = ws.getRow(1);
-        for(let index = 1; index <= firstRow.cellCount; index++)
+        let firstRowAfterRemoveColumns = ws.getRow(1);
+        for(let index = 1; index <= firstRowAfterRemoveColumns.cellCount; index++)
         {
-            firstRow.getCell(index).value = columnNames[index - 1];
+            console.log(firstRowAfterRemoveColumns.getCell(index).value + " " + index)
         }
-        wb.csv.writeFile(fileName);
     }).catch(err => {
             console.log(err.message);
     });
@@ -279,27 +286,13 @@ function run_request_concurrent_process()
                 for(const environmentPath of usableEnvironment)
                 {
                     var exportFileName = export_file_name_generate(collectionPath,index,environmentPath);
-                    const command = "newman run " + '"' + collectionPath + '"' + " -e " + '"' + environmentPath + '"'+ " -r csv" + " --reporter-csv-export "+ '"' + exportFileName + '"';
-                    console.log(command)
-                    console.log(exportFileName)
+                    const command = "newman run " + '"' + collectionPath + '"' + " -e " + '"' + environmentPath + '"'+ " -r csv" + " --reporter-csv-export "+ '"' + exportFileName + '"' + " --verbose";
                     child_process.exec(command,(error,stdout,stderr)=>{
-                        console.log(stderr)
-                        console.log(stdout);
-
+                        if(stderr.length > 0)
+                        {
+                            console.log(stderr.length);
+                        }
                     }); 
-                    // newman.run(
-                    //     {
-                    //         collection: collectionPath,
-                    //         environment: environmentPath,
-                    //         reporters: 'csv',
-                    //         reporter: {
-                    //             csv: { 
-                    //                 includeBody: true,
-                    //                 export: exportFileName}
-                    //         }
-                    //     },
-                    //     (error,result) => {beautify_column_header(exportFileName);}
-                    //     )
                 }
             }
         }
@@ -311,17 +304,13 @@ function run_request_concurrent_process()
             for(const collectionPath of usableCollection)
             {
                 var exportFileName = export_file_name_generate(collectionPath,index);
-                newman.run(
+                const command = "newman run " + '"' + collectionPath + '"' + " -r csv" + " --reporter-csv-export "+ '"' + exportFileName + '"' + " --verbose";
+                child_process.exec(command,(error,stdout,stderr)=>{
+                    if(stderr.length > 0)
                     {
-                        collection: collectionPath,
-                        reporters: 'csv',
-                        reporter: {
-                            csv: { 
-                                includeBody: true,
-                                export: exportFileName}
-                                    }
-                    },(error,result) => {beautify_column_header(exportFileName);}
-                        );
+                        console.log(stderr.length);
+                    }
+                });
             }
         }
     }
@@ -341,7 +330,6 @@ try
     else
     {
         run_request_concurrent_process();
-
     }
 }catch(error)
 {
