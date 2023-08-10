@@ -1,18 +1,18 @@
 import tkinter.messagebox
 import os
 import subprocess
-import ProgressBar
+import ProgressBar as ProgressBar
 import random
 
 class Controller():
     def __init__(self,gui):
         self.gui = gui
-        self.collectionFileName = gui.get_collection_files()
-        self.environmentFiles = gui.get_environment_files()
-        self.iterationTime = gui.get_iteration_run()
-        self.runParallel = gui.get_run_parralel_check_button_value()
-        self.usableEnvironmentFiles = []
-        self.notUsableEnvironmentFiles = []
+        # self.collectionFileName = gui.get_collection_files()
+        # self.environmentFiles = gui.get_environment_files()
+        # self.iterationTime = gui.get_iteration_run()
+        # self.runParallel = gui.get_run_parralel_check_button_value()
+        # self.usableEnvironmentFiles = []
+        # self.notUsableEnvironmentFiles = []
     
     def run_process(self):
         try:
