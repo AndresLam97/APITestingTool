@@ -553,14 +553,26 @@ function run_request_concurrent_process()
     }
 }
 
+function check_the_report_folder()
+{
+    if(!fs.existsSync("./report"))
+    {
+        fs.mkdirSync("./report")
+    }
+    else
+    {
+        //Do nothing
+    }
+}
+
 try
 {
-    console.log(process.argv)
     check_arguments();
     check_duplicate();
     placing_argument_to_variable();
     splitting_collection_and_environment();
     check_valid_of_collection_and_environment();
+    run_request_concurrent_process();
     if(runParallel === true)
     {
         run_request_parallel_process();

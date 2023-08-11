@@ -24,7 +24,7 @@ class Controller():
             else:
                 dialogType = "Info"
                 title = "Confirm before start process"
-                message = "The environment file that will be run on process:\n"
+                message = "The environment files that will be run on process:\n"
                 for environment in self.usableEnvironmentFiles:
                     message = message + environment + "\n"
                 if len(self.notUsableEnvironmentFiles) > 0:
@@ -89,18 +89,20 @@ class Controller():
         dialogType = "Success"
         title = "Process run result"
         message = "The process was run successfully and the run report saved into the report folder, please check the folder to get the run report !!!"
-        command = self.get_command_base_on_inputted_data()
-        process = subprocess.Popen(["node",processFile,command])
+        subProcessList = []
+        subProcessList.append("node")
+        subProcessList.append(processFile)
+        self.get_command_base_on_inputted_data(subProcessList)
+        process = subprocess.Popen(subProcessList)
         progressBar.animated_run(random.randint(50,90),100)
         process.wait()
         progressBar.animated_run(100,50)
         self.display_information_dialog(dialogType,title,message)
         
-    def get_command_base_on_inputted_data(self):
+    def get_command_base_on_inputted_data(self,command):
         collectionString = ""
         environmentString = ""
         iterationTime = str(self.iterationTime)
-        command = " "
         if(len(self.collectionFileName)> 1):
             collectionString = ",".join(self.collectionFileName)
         else:
@@ -114,15 +116,19 @@ class Controller():
             pass
         
         if(environmentString == ""):
-            command = command + "-c " + '"' + collectionString  + '"' + " -n " + iterationTime
+            pass
         else:
-            command = command + "-c " + '"' + collectionString + '"' + " -e " + '"' + environmentString + '"' + " -n " + iterationTime
+            command.append("-e")
+            command.append(environmentString)
+            
+        command.append("-c")
+        command.append(collectionString)
+        command.append("-n")
+        command.append(iterationTime)
             
         if(self.runParallel == True):
-            command = command + " -p"
+            command.append("-p")
         else:
             pass
-        
-        print(command)
             
         return command
