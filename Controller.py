@@ -1,7 +1,7 @@
 import tkinter.messagebox
 import os
 import subprocess
-import ProgressBar
+import SecondVersion.ProgressBar as ProgressBar
 import random
 
 class Controller():
