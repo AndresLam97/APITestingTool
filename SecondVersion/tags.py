@@ -1,37 +1,28 @@
 import tkinter as tk
 import tkinter.font as tkFont
-import DefinedTable as t
 from tkinter import ttk
 
 class App:
     def __init__(self):
         self.root = tk.Tk()
-
-    def init_components(self):
+        
         # Font components
         generalFont = tkFont.Font(family='Times',size=12)
-
-        # Button components
-        self.addCollectionButton =tk.Button(self.root,font=generalFont,anchor="center",bg="#f0f0f0",fg="#000000",justify="center",text="Add colllection",command=self.add_collection)
-        self.addEnvironmentButton=tk.Button(self.root,font=generalFont,anchor="center",bg="#f0f0f0",fg="#000000",justify="center",text="Add environment",command=self.add_environment)
-        self.addDataFileButton=tk.Button(self.root,font=generalFont,anchor="center",bg="#f0f0f0",fg="#000000",justify="center",text="Add data file",command=self.add_data_file)
-        self.addDatabaseButton=tk.Button(self.root,font=generalFont,anchor="center",bg="#f0f0f0",fg="#000000",justify="center",text="Add database",command=self.add_database)
-        self.addButton=tk.Button(self.root,font=generalFont,anchor="center",bg="#f0f0f0",fg="#000000",justify="center",text="Add",command=self.add_row)
-        self.deleteButton=tk.Button(self.root,font=generalFont,anchor="center",bg="#f0f0f0",fg="#000000",justify="center",text="Delete",command=self.delete_row)
-        self.runButton=tk.Button(self.root,font=generalFont,anchor="center",bg="#f0f0f0",fg="#000000",justify="center",text="Run",command=self.run)
-
-        # Label components
-        self.iterationRunLabel=tk.Label(self.root,font=generalFont,anchor="center",fg="#333333",justify="center",text="Iteration run")
         
-        # Entry components
-        self.iterationRunEntry=tk.Entry(self.root,font=generalFont,fg="#333333",justify="center",borderwidth="1px")
+        # Button components
+        self.addCollectionButton =tk.Button(self.root,font=generalFont,anchor="center",bg="#f0f0f0",fg="#000000",justify="center",text="Add colllection")
+        self.addEnvironmentButton=tk.Button(self.root,font=generalFont,anchor="center",bg="#f0f0f0",fg="#000000",justify="center",text="Add environment")
+        self.addDataFileButton=tk.Button(self.root,font=generalFont,anchor="center",bg="#f0f0f0",fg="#000000",justify="center",text="Add data file")
+        self.addDatabaseButton=tk.Button(self.root,font=generalFont,anchor="center",bg="#f0f0f0",fg="#000000",justify="center",text="Add database")
+        self.addButton=tk.Button(self.root,font=generalFont,anchor="center",bg="#f0f0f0",fg="#000000",justify="center",text="Add")
+        self.deleteButton=tk.Button(self.root,font=generalFont,anchor="center",bg="#f0f0f0",fg="#000000",justify="center",text="Delete")
+        self.runButton=tk.Button(self.root,font=generalFont,anchor="center",bg="#f0f0f0",fg="#000000",justify="center",text="Run")
         
         # Table components
         self.table = ttk.Treeview(self.root,height=10)
         self.tableScrollBar = tk.Scrollbar(master=self.table,orient="vertical")
         self.table_config()
-        self.table.insert(parent='', index=0, iid=0, values=("My Test Collection", "My Test Environment", "My Test Database","My Test Data File","Yes","Yes"))
-
+        
 
     def table_config(self):
         self.table['columns'] = ('collection','environment','database','dataFile','iteration','parallel')
@@ -75,46 +66,37 @@ class App:
         
         # Second row
         self.table.place(x=20,y=60,width=785,height=200)
-        self.addButton.place(x=810,y=100,width=100,height=25)
-        self.deleteButton.place(x=810,y=160,width=100,height=25)
-        
-        # Third row
-        self.iterationRunLabel.place(x=20,y=270,width=90,height=25)
-        self.iterationRunEntry.place(x=110,y=270,width=97,height=25)
-        self.runButton.place(x=810,y=270,width=100,height=25)
+        self.addButton.place(x=810,y=60,width=100,height=25)
+        self.deleteButton.place(x=810,y=140,width=100,height=25)
+        self.runButton.place(x=810,y=220,width=100,height=25)
 
     def start_up(self):
-        self.init_components()
         self.components_line_up()
         self.root.mainloop()
 
-    def add_collection(self):
-        print("add_collection")
-
-
-    def add_environment(self):
-        print("add_environment")
-
-
-    def add_data_file(self):
-        print("add_data_file")
-
-
-    def add_database(self):
-        print("add_database")
-
-
-    def add_row(self):
-        print("add_row")
-
-
-    def delete_row(self):
-        print("delete_row")
-
-
-    def run(self):
-        print("run")
-
-if __name__ == "__main__":
-    app = App()
-    app.start_up()
+    def get_main_frame(self):
+        return self.root
+    
+    def get_table(self):
+        return self.table
+    
+    def get_add_collection_button(self):
+        return self.addCollectionButton
+    
+    def get_add_environment_button(self):
+        return self.addEnvironmentButton
+    
+    def get_add_database_button(self):
+        return self.addDatabaseButton
+    
+    def get_add_data_file_button(self):
+        return self.addDataFileButton
+    
+    def get_add_button(self):
+        return self.addButton
+    
+    def get_delete_button(self):
+        return self.deleteButton
+    
+    def get_run_button(self):
+        return self.runButton
