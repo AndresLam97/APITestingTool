@@ -12,6 +12,8 @@ const config =
     }
 }
 
+self.tablePanel = tk.PanedWindow(master=self.root,orient="vertical")
+        GLineEdit_408 = t.Table(self.tablePanel)
 
 async function test(){
     try{

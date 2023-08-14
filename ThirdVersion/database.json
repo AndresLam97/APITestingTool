@@ -1,0 +1,33 @@
+[{
+    "user":"asdasdas",
+    "password": "asdasdsa",
+    "server": "asdasdasd",
+    "port": 123456,
+    "database": "testest",
+    "trustServerCertificate":"", 
+    "encrypt":"",
+    "max": "", 
+    "min": "", "idleTimeoutMillis": ""
+},
+{
+    "user":"asdasd",
+    "password": "zxcxz",
+    "server": "zxcxzc",
+    "port": 2,
+    "database":"zxcxzcxz",
+    "trustServerCertificate":"", 
+    "encrypt":"",
+    "max": "", 
+    "min": "", "idleTimeoutMillis": ""
+},
+{
+    "user":"asdasd",
+    "password": "212321",
+    "server": "zxcxzc",
+    "port": 1,
+    "database":"zxcxzc",
+    "trustServerCertificate":"", 
+    "encrypt":"",
+    "max": "", 
+    "min": "", "idleTimeoutMillis": ""
+}]
