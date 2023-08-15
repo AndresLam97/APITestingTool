@@ -4,7 +4,7 @@ import subprocess
 import random
 import tkinter.filedialog as tkDialog
 import FileWorker
-import tkinter.messagebox as messagebox
+import tkinter.messagebox
 
 class Controller():
     def __init__(self,gui):
@@ -104,18 +104,20 @@ class Controller():
             ("Marco Excel file",self.fileExtension['marcoExcel'])
         ]
         fileNames = tkDialog.askopenfilenames(title = "Select Data File",filetypes=fileTypes)
-        for file in fileNames:
-            if file in self.dataFilePathList:
+        
+        for fileName in fileNames:
+            if fileName in self.dataFilePathList or fileName == "":
                 pass
             else:
-                detachedDataFileName = self.fileWorker.detach_file_name(file,withExtension=False)
-                self.dataFilePathList.append(file)
-                self.detachedDataFileNameList.append(detachedDataFileName)
-        if(len(fileNames) > 0):
-            self.display_information_dialog("Success","Add data file", "Add data file(s) successfully !!!")
-        else: 
-            pass
-    
+                message = self.fileWorker.verify_data_file(fileName)
+                if  message == "":
+                    detachedDataFileName = self.fileWorker.detach_file_name(fileName,withExtension=False)
+                    self.dataFilePathList.append(fileName)
+                    self.detachedDataFileNameList.append(detachedDataFileName)
+                    self.display_information_dialog("Success","Add data file", "Add data file(s) successfully !!!")
+                else:
+                    self.display_information_dialog("Error","Add data file",message)
+        
     def main_frame_add_database(self):
         fileTypes = [
             ("Csv file",self.fileExtension['csv']),
@@ -162,22 +164,25 @@ class Controller():
             runParralel = self.subFrameRunParallelCheckBoxVariable.get()
             runTime = int(self.subFrameRunTimeEntry.get())
             if runTime <= 0:
-                raise TypeError()
+                raise Exception('Run time lower than 0')
             if collection == '':
-                raise KeyError()
+                raise Exception('Collection is empty')
             if databaseUrl != '' and database == "":
-                raise NameError()
+                raise Exception('Database is not selected')
             nextRowIndex = len(self.mainFrameTable.get_children())+1
             self.mainFrameTable.insert(parent='', index=nextRowIndex, iid=nextRowIndex, values=(collection, environment, databaseUrl,database,dataFile,runTime,runParralel))
             self.sub_frame_cancel()
         except TypeError:
             self.display_information_dialog("Error","Iteration run time validation","The run time must be greater than 0, please retry !!!")
-        except ValueError:
-            self.display_information_dialog("Error","Iteration run time validation","The run time must have a number type, please retry !!!")
-        except KeyError:
-            self.display_information_dialog("Error","Collection validation","Must choose a collection, please retry !!!")
-        except NameError:
-            self.display_information_dialog("Error","Database validation","Must choose a database when the database url is selected, please retry !!!")
+        except Exception as ex:
+            if(str(ex) == 'Run time lower than 0'):
+                self.display_information_dialog("Error","Iteration run time validation","The run time must have a number type, please retry !!!")
+            elif (str(ex) == 'Collection is empty'):
+                self.display_information_dialog("Error","Collection validation","Must choose a collection, please retry !!!")
+            elif (str(ex) == 'Database is not selected'):
+                self.display_information_dialog("Error","Database validation","Must choose a database when the database url is selected, please retry !!!")
+            else:
+                pass
             
     def sub_frame_cancel(self):
         self.subFrame.grab_release()

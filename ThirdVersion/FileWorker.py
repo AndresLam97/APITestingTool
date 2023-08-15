@@ -37,7 +37,6 @@ class FileWorker:
     def verify_database_json_file(self,databaseFilePath):
         try:
             message = ""
-            databaseList = ""
             fileName = self.detach_file_name(databaseFilePath,True)
             with open(databaseFilePath) as f:
                 data = json.load(f)
@@ -163,17 +162,34 @@ class FileWorker:
                 fileInformation = pandas.read_excel(path)
             else:
                 fileInformation = pandas.read_csv(path)
-            fileName = self.detach_file_name(path,True)
-            verify_excel_columns_message = self.verify_excel_columns(fileInformation,fileName)
-            verify_excel_columns_value_message = self.verify_columns_value(fileInformation,fileName)
+            fileName = self.detach_file_name(path,withExtension=True)
+            verify_excel_columns_message = self.verify_data_file_excel_columns(fileInformation,fileName)
             if verify_excel_columns_message != None:
                 return verify_excel_columns_message
-            if verify_excel_columns_value_message != None:
-                return verify_excel_columns_value_message
             return message
         except:
             return "Cannot open the file, please recheck the path !!!"
 
-    def verify_data_file_json_file(dataFilePath):
-        pass
+    def verify_data_file_excel_columns(self,fileInformation,fileName):
+        columnList = fileInformation.columns.values
+        message = ""
+        for expectedColumn in self.dataFileColumnList:
+            if (expectedColumn not in columnList):
+                message = "The file " + '"' + fileName + '"' +" does not contain enought columns, please refer to the template file to get all the columns information !!!"
+                return message
+        return message
 
+    def verify_data_file_json_file(self,dataFilePath):
+        try:
+            message = ""
+            fileName = self.detach_file_name(dataFilePath,True)
+            with open(dataFilePath) as f:
+                data = json.load(f)
+                for item in data:
+                    for expectedColumn in self.dataFileColumnList:
+                        if expectedColumn not in item.keys():
+                            message = "The file " + '"' + fileName + '"' + " does not contain enought columns, please refer to the template file to get all the columns information !!!"
+                            return message
+        except Exception:
+            return "Cannot open the file, please recheck the path !!!"
+        return message

@@ -1,0 +1,25 @@
+[{
+    "asd": "asdsada"
+},
+{
+    "sqlQuery":"asdasd",
+    "password": "zxcxz",
+    "server": "zxcxzc",
+    "port": 2,
+    "database":"zxcxzcxz",
+    "trustServerCertificate":"", 
+    "encrypt":"",
+    "max": "", 
+    "min": "", "idleTimeoutMillis": ""
+},
+{
+    "sqlQuery":"asdasd",
+    "password": "212321",
+    "server": "zxcxzc",
+    "port": 1,
+    "database":"zxcxzc",
+    "trustServerCertificate":"", 
+    "encrypt":"",
+    "max": "", 
+    "min": "", "idleTimeoutMillis": ""
+}]

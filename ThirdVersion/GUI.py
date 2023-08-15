@@ -12,7 +12,7 @@ class GUI:
         subFrameFont = tkFont.Font(family='Times',size = 11)
 
         # Main Frame button components
-        self.mainFrameAddCollectionButton =tk.Button(self.mainFrame,font=generalFont,anchor="center",bg="#f0f0f0",fg="#000000",justify="center",text="Add Colllection")
+        self.mainFrameAddCollectionButton =tk.Button(self.mainFrame,font=generalFont,anchor="center",bg="#f0f0f0",fg="#000000",justify="center",text="Add Collection")
         self.mainFrameAddEnvironmentButton=tk.Button(self.mainFrame,font=generalFont,anchor="center",bg="#f0f0f0",fg="#000000",justify="center",text="Add Environment")
         self.mainFrameAddDataFileButton=tk.Button(self.mainFrame,font=generalFont,anchor="center",bg="#f0f0f0",fg="#000000",justify="center",text="Add Data File")
         self.mainFrameAddDatabaseButton=tk.Button(self.mainFrame,font=generalFont,anchor="center",bg="#f0f0f0",fg="#000000",justify="center",text="Add Database")
