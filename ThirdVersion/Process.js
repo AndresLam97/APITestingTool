@@ -528,12 +528,12 @@ function run_request_concurrent_process()
             {
                 for(const environmentPath of usableEnvironment)
                 {
+                    const exportFileName = export_file_name_generate(collectionPath,index,environmentPath);
                     var command = "newman run " + '"' + collectionPath + '"' + " -e " + '"' + environmentPath + '"'+ " -r csvextra" + " --reporter-csvextra-export "+ '"' + exportFileName + '"';
                     if (dataFile.length !== 0)
                     {
                         command = command + " -d " + dataFile;
                     }
-                    const exportFileName = export_file_name_generate(collectionPath,index,environmentPath);
                     child_process.exec(command,(error,stdout,stderr)=>{
                         if(stderr.length > 0)
                         {
@@ -553,7 +553,11 @@ function run_request_concurrent_process()
             for(const collectionPath of usableCollection)
             {
                 const exportFileName = export_file_name_generate(collectionPath,index);
-                const command = "newman run " + '"' + collectionPath + '"' + " -r csvextra" + " --reporter-csvextra-export "+ '"' + exportFileName + '"';
+                var command = "newman run " + '"' + collectionPath + '"' + " -r csvextra" + " --reporter-csvextra-export "+ '"' + exportFileName + '"';
+                if (dataFile.length !== 0)
+                {
+                    command = command + " -d " + dataFile;
+                }
                 child_process.exec(command,(error,stdout,stderr)=>{
                     if(stderr.length > 0)
                     {

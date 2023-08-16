@@ -11,30 +11,7 @@
 			"name": "New Request 1",
 			"event": [
 				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							"var options = {\r",
-							"  'method': 'GET',\r",
-							"  'url': 'https://api.instantwebtools.net/v1/airlines/1',\r",
-							"  'headers': {\r",
-							"  }\r",
-							"};\r",
-							"\r",
-							"pm.sendRequest.skip(options,function(error,response){\r",
-							"    if (response.code === 200)\r",
-							"    {\r",
-							"        console.log(\"Hello\")\r",
-							"        \r",
-							"    }\r",
-							"\r",
-							"})\r",
-							"\r",
-							"\r",
-							""
-						],
-						"type": "text/javascript"
-					}
+					"listen": "prerequest"
 				},
 				{
 					"listen": "test",
@@ -54,7 +31,7 @@
 					"raw": "helloworld"
 				},
 				"url": {
-					"raw": "https://api.instantwebtools.net/v1/airlines/1",
+					"raw": "https://api.instantwebtools.net/v1/airlines/{{id}}",
 					"protocol": "https",
 					"host": [
 						"api",
@@ -64,7 +41,47 @@
 					"path": [
 						"v1",
 						"airlines",
-						"1"
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "New Request 2",
+			"event": [
+				{
+					"listen": "prerequest"
+				},
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(pm.iterationData.get('id'))"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "helloworld"
+				},
+				"url": {
+					"raw": "https://api.instantwebtools.net/v1/airlines/{{id}}",
+					"protocol": "https",
+					"host": [
+						"api",
+						"instantwebtools",
+						"net"
+					],
+					"path": [
+						"v1",
+						"airlines",
+						"{{id}}"
 					]
 				}
 			},
